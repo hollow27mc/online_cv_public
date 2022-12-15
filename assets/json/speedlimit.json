@@ -1,0 +1,91 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "width": 700,
+  "height": 200,
+  "padding": 5,
+  "data": [
+    {
+      "name": "table",
+      "values": [
+        {"category": "25", "amount": 38},
+        {"category": "20", "amount": 31},
+        {"category": "35", "amount": 28},
+        {"category": "15", "amount": 19},
+        {"category": "10", "amount": 11},
+        {"category": "40", "amount": 8},
+        {"category": "5", "amount": 3},
+        {"category": "0", "amount": 3},
+        {"category": "45", "amount": 2},
+        {"category": "15", "amount": 19},
+        {"category": "50", "amount": 1},
+        {"category": "24", "amount": 1}
+      ]
+    }
+  ],
+  "signals": [
+    {
+      "name": "tooltip",
+      "value": {},
+      "on": [
+        {"events": "rect:mouseover", "update": "datum"},
+        {"events": "rect:mouseout", "update": "{}"}
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "xscale",
+      "type": "band",
+      "domain": {"data": "table", "field": "category"},
+      "range": "width",
+      "padding": 0.05,
+      "round": true
+    },
+    {
+      "name": "yscale",
+      "domain": {"data": "table", "field": "amount"},
+      "nice": true,
+      "range": "height"
+    }
+  ],
+  "axes": [
+    {"orient": "bottom", "scale": "xscale", "title": "posted speed limit"},
+    {"orient": "left", "scale": "yscale", "title": "number of crashes"}
+  ],
+  "marks": [
+    {
+      "type": "rect",
+      "from": {"data": "table"},
+      "encode": {
+        "enter": {
+          "x": {"scale": "xscale", "field": "category"},
+          "width": {"scale": "xscale", "band": 1},
+          "y": {"scale": "yscale", "field": "amount"},
+          "y2": {"scale": "yscale", "value": 0}
+        },
+        "update": {"fill": {"value": "steelblue"}},
+        "hover": {"fill": {"value": "green"}}
+      }
+    },
+    {
+      "type": "text",
+      "encode": {
+        "enter": {
+          "align": {"value": "center"},
+          "baseline": {"value": "bottom"},
+          "fill": {"value": "#333"}
+        },
+        "update": {
+          "x": {"scale": "xscale", "signal": "tooltip.category", "band": 0.5},
+          "y": {"scale": "yscale", "signal": "tooltip.amount", "offset": -2},
+          "text": {"signal": "tooltip.amount"},
+          "fillOpacity": [
+            {"test": "isNaN(tooltip.amount)", "value": 0},
+            {"value": 1}
+          ]
+        }
+      }
+    }
+  ],
+  "config": {}
+}
