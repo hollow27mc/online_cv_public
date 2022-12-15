@@ -1,0 +1,21 @@
+{
+  "data": {
+    "url": "https://raw.githubusercontent.com/hollow27mc/IS445-Final-Project/main/Traffic_Crashes_-_Crashes.csv"
+  },
+  "selection": {"pts": {"type": "single"}},
+  "mark": "rect",
+  "encoding": {
+    "y": {"field": "STREET_DIRECTION", "type": "ordinal"},
+    "x": {"field": "CRASH_MONTH", "type": "ordinal"},
+    "color": {
+      "condition": {
+        "selection": "pts",
+        "aggregate": "count",
+        "field": "*",
+        "type": "quantitative"
+      },
+      "value": "grey"
+    }
+  },
+  "config": {}
+}
